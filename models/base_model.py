@@ -3,6 +3,7 @@ import uuid
 import datetime
 import models
 
+
 class BaseModel:
     def __init__(self, *args, **kwargs):
         """_summary_
@@ -15,11 +16,11 @@ class BaseModel:
                 if key != "__class__":
                     if key == "created_at" or key == "updated_at":
                         theformat = "%Y-%m-%dT%H:%M:%S.%f"
-                        value = datetime.datetime.strptime(str(value), theformat)
+                        value = datetime.datetime.strptime(
+                            str(value), theformat)
                     setattr(self, key.lower(), value)
         else:
             models.storage.new(self)
-        
 
     def save(self):
         """_summary_
@@ -34,10 +35,10 @@ class BaseModel:
             _type_: _description_
         """
         return {
-           **self.__dict__,
-           "__class__": __class__.__name__,
-           "created_at": self.created_at.isoformat("T"),
-           "updated_at": self.updated_at.isoformat("T"),
+            **self.__dict__,
+            "__class__": type(self).__name__,
+            "created_at": self.created_at.isoformat("T"),
+            "updated_at": self.updated_at.isoformat("T"),
         }
 
     def __str__(self):
@@ -46,4 +47,4 @@ class BaseModel:
         Returns:
             _type_: _description_
         """
-        return f"[{__class__.__name__}] ({self.id}) {self.__dict__}"
+        return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
