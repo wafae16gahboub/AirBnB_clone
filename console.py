@@ -131,6 +131,28 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Do nothing when an empty line is entered."""
         pass
+    def do_destroy(self, ligne):
+        """destroy:00000"""
+        if len(ligne) == 0:
+            print("** class name missing **")
+        else:
+            ligne = ligne.split()
+            if ligne[0] in models.class_dict:
+                try:
+                    obj_id = ligne[0] + '.' + ligne[1]
+                except IndexError:
+                    print(("** instance id missing **")
+                else:
+                    try:
+                        del models.storage.all()[obj_id]
+                    except KeyError:
+                        print("** no instance found **")
+                    else:
+                        models.storage.save()
+            else:
+                print("** class doesn't exist **")
+
+
 
 
 if __name__ == '__main__':
