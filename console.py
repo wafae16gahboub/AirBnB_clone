@@ -43,7 +43,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             className = line.split()[0]
         except IndexError:
-            pass
+            return
 
         if not self.checkClassName(className):
             return
@@ -178,6 +178,40 @@ class HBNBCommand(cmd.Cmd):
             return
         setattr(objects[key], args[2], args[3])
         storage.save()
+
+    def default(self, line):
+        """_summary_
+
+        Args:
+            line (_type_): _description_
+        """
+        objs = storage.all()
+        args = line.split(".")
+        className = args[0]
+        try:
+            if className not in self.__allClasses:
+                print("** class doesn't exist **")
+                return
+            if args[1] == "all()":
+                self.do_all(className)
+            elif args[1] == "count()":
+                count = 0
+                for val in objs.values():
+                    if className == val.to_dict()["__class__"]:
+                        count += 1
+                print(count)
+            elif args[1].startswith("show(") or args[1].startswith("destroy("):
+                command = args[1].split("(")[0]
+                objId = args[1].split("(")[1].strip(")").strip("\"")
+                if not objId:
+                    print("** instance id missing **")
+                elif command == "show":
+                    self.do_show(f"{className} {objId}")
+                elif command == "destroy":
+                    self.do_destroy(f"{className} {objId}")
+
+        except IndexError:
+            print("Invalid")
 
 
 if __name__ == '__main__':
