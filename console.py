@@ -47,7 +47,7 @@ class HBNBCommand(cmd.Cmd):
         if not self.checkClassName(className):
             return
 
-        newInstance = self.allClasses[className]()
+        newInstance = self.__allClasses[className]()
         print(newInstance.id)
         newInstance.save()
 
