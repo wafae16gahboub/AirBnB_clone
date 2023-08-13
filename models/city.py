@@ -1,7 +1,12 @@
 #!/usr/bin/python3
 from models.base_model import BaseModel
 
+
 class City(BaseModel):
-     """yyyyyyy"""
-     state_id = ""
-     name = ""
+    """_summary_
+
+    Args:
+        BaseModel (_type_): _description_
+    """
+    state_id = ""
+    name = ""

@@ -14,7 +14,7 @@ class HBNBCommand(cmd.Cmd):
     """Simple command processor example."""
     prompt = '(hbnb) '
 
-    allClasses = {
+    __allClasses = {
         "BaseModel": BaseModel,
         "User": User,
         "Place": Place,
@@ -57,36 +57,24 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line (_type_): _description_
         """
-        args = line.split()
-        className = None
-        id = None
-
-        try:
-            className = args[0]
-        except IndexError:
-            pass
-        if not self.checkClassName(className):
+        if len(line) == 0:
+            print("** class name missing **")
             return
 
+        args = line.split()
+        if args[0] not in self.__allClasses:
+            print("** class doesn't exist **")
+            return
         try:
-            id = args[1]
+            objId = f"{args[0]}.{args[1]}"
         except IndexError:
-            pass
-
-        if id is None:
             print("** instance id missing **")
             return
-        objs = storage.all()
-        idsList = []
-        for key in objs.keys():
-            if key.startswith(args[0]):
-                idsList.append(key.split(".")[1])
 
-        if id not in idsList:
-            print("** no instance found *")
-            return
-
-        print(objs[f"{className}.{id}"])
+        try:
+            print(storage.all()[objId])
+        except KeyError:
+            print("** no instance found **")
 
     def do_all(self, line):
         """_summary_
@@ -104,7 +92,7 @@ class HBNBCommand(cmd.Cmd):
         if not className:
             for key in objs:
                 print(objs[key])
-        elif className not in self.allClasses:
+        elif className not in self.__allClasses:
             print("** class doesn't exist **")
         else:
             for key in objs:
@@ -123,7 +111,7 @@ class HBNBCommand(cmd.Cmd):
         if not className:
             print("** class name missing **")
             return False
-        elif className not in self.allClasses:
+        elif className not in self.__allClasses:
             print("** class doesn't exist **")
             return False
         return True
@@ -131,28 +119,64 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Do nothing when an empty line is entered."""
         pass
-    def do_destroy(self, ligne):
-        """destroy:00000"""
-        if len(ligne) == 0:
+
+    def do_destroy(self, line):
+        """_summary_
+
+        Args:
+            line (_type_): _description_
+        """
+        if len(line) == 0:
             print("** class name missing **")
         else:
-            ligne = ligne.split()
-            if ligne[0] in models.class_dict:
+            line = line.split()
+            if line[0] in self.__allClasses:
                 try:
-                    obj_id = ligne[0] + '.' + ligne[1]
+                    obj_id = line[0] + '.' + line[1]
                 except IndexError:
-                    print(("** instance id missing **")
+                    print("** instance id missing **")
                 else:
                     try:
-                        del models.storage.all()[obj_id]
+                        del storage.all()[obj_id]
                     except KeyError:
                         print("** no instance found **")
                     else:
-                        models.storage.save()
+                        storage.save()
             else:
                 print("** class doesn't exist **")
 
+    def do_update(self, line):
+        """_summary_
 
+        Args:
+            line (_type_): _description_
+        """
+        if len(line) == 0:
+            print("** class name missing **")
+            return
+
+        args = line.split()
+        if args[0] not in self.__allClasses:
+            print("** class doesn't exist **")
+            return
+        try:
+            key = f"{args[0]}.{args[1]}"
+        except IndexError:
+            print("** instance id missing **")
+            return
+
+        objects = storage.all()
+        if key not in objects:
+            print("** no instance found **")
+            return
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+        if len(args) < 4:
+            print("** value missing **")
+            return
+        setattr(objects[key], args[2], args[3])
+        storage.save()
 
 
 if __name__ == '__main__':

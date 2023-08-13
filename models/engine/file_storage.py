@@ -48,9 +48,8 @@ class FileStorage:
         objs = {
             key: value.to_dict() for key, value in type(self).__objects.items()
         }
-        with open(self.__file_path, mode="w", encoding="utf-8") as f: 
+        with open(self.__file_path, mode="w", encoding="utf-8") as f:
             f.write(json.dumps(objs))
-        pass
 
     def reload(self):
         """_summary_
@@ -61,5 +60,5 @@ class FileStorage:
                 for key, value in fileLoad.items():
                     obj = self.allClasses[value["__class__"]](**value)
                     self.__objects[key] = obj
-        except:
+        except FileNotFoundError:
             pass
