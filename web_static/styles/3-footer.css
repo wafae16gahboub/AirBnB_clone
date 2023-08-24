@@ -4,6 +4,8 @@ footer {
   border-top: 1px solid #cccccc;
   bottom: 0px;
   position: fixed;
-  text-align: center;
   border-bottom: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
