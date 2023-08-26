@@ -58,6 +58,7 @@ button:hover {
   top: 100%;
   left: 0px;
   padding: 20px 0px;
+  display: none;
 }
 
 li {
@@ -69,4 +70,8 @@ li {
 }
 .filters h3 h4 {
   margin-left: 30px;
+}
+.amenities:hover .popover,
+.location:hover .popover {
+  display: block;
 }
