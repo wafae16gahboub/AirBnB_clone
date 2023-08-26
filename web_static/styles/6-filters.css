@@ -31,7 +31,6 @@ button {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  align-items: flex-start;
   height: 100%;
   width: 25%;
   position: relative;
@@ -50,27 +49,24 @@ h4 {
 button:hover {
   opacity: 90%;
 }
-.popover {
+.filters .popover {
   background-color: #fafafa;
   width: 100%;
   border-radius: 4px;
   border: 1px solid #dddddd;
   position: absolute;
   top: 100%;
-}
-.popover:nth-child(2) {
-  padding: 40px;
-}
-.popover:nth-child(1) {
-  padding: 20px 30px;
-}
-.popover:nth-child(1) ul {
-  margin-left: 20px;
+  left: 0px;
+  padding: 20px 0px;
 }
 
-.popover:nth-child(1) > li:nth-child(1) {
-  margin-bottom: 20px;
-}
 li {
   list-style: none;
+  margin-left: 25px;
+}
+.filters h2 {
+  font-size: 16px;
+}
+.filters h3 h4 {
+  margin-left: 30px;
 }
